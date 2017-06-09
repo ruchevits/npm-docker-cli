@@ -1,0 +1,20 @@
+{
+  "name": "npm-docker-cli",
+  "version": "1.0.0",
+  "description": "Tool for building docker images for runnable applications and deploying them to EC2 container service.",
+  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/ruchevits/npm-docker-cli/issues"
+  },
+  "license": "UNLICENSED",
+  "contributors": [{
+    "name" : "Edward Ruchevits",
+    "email" : "edward@tallysticks.io"
+  }],
+  "bin": "./bin/npm-docker-cli.sh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruchevits/npm-docker-cli.git"
+  },
+  "preferGlobal": true
+}
