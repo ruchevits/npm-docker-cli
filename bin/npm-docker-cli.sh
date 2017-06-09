@@ -7,17 +7,17 @@ get_abs_filename() {
 }
 
 get_docker_image_name() {
-  PACKAGE_NAME=$(grep '"name":' $1 | cut -d\" -f4 | cut -c 2-)
+  PACKAGE_NAME=$(node -p -e "require('./package.json').name.substr(1)")
   echo "$PACKAGE_NAME"
 }
 
 get_docker_image_version() {
-  PACKAGE_VERSION=$(grep '"version":' $1 | cut -d\" -f4)
+  PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
   echo "$PACKAGE_VERSION"
 }
 
 get_aws_repository_url() {
-  REPOSITORY_URL=$(grep '"repository":' $1 | cut -d\" -f4)
+  REPOSITORY_URL=$(node -p -e "require('./package.json').deployment.repository")
   echo "$REPOSITORY_URL"
 }
 
@@ -81,22 +81,14 @@ sub_build() {
 
 sub_deploy() {
 
-  DEPLOYMENT_FILE="deployment.json"
-  DEPLOYMENT_FILE_PATH=$(get_abs_filename $DEPLOYMENT_FILE)
-
-  # Check if Docker file exists at given location
-  if [ ! -f "$DEPLOYMENT_FILE_PATH" ]
-  then
-    echo "File deployment.json does not exist at: $DEPLOYMENT_FILE_PATH"
-    exit 1
-  fi
-
-  AWS_REPOSITORY_URL=$(get_aws_repository_url $DEPLOYMENT_FILE)
+  AWS_REPOSITORY_URL=$(get_aws_repository_url $PACKAGE_FILE)
 
   echo "Deploying docker image: $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION to $AWS_REPOSITORY_URL"
 
-  docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION $AWS_REPOSITORY_URL:$DOCKER_IMAGE_VERSION
-  docker push $AWS_REPOSITORY_URL:$DOCKER_IMAGE_VERSION
+  echo "sda"
+
+  # docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION $AWS_REPOSITORY_URL:$DOCKER_IMAGE_VERSION
+  # docker push $AWS_REPOSITORY_URL:$DOCKER_IMAGE_VERSION
 
 }
 
